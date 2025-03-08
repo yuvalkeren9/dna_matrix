@@ -5,6 +5,7 @@ import random
 import sys
 import copy
 import numpy as np
+from direct_solvers import get_optimal_row_solution
 
 # Globals:
 DNA_BASES = 'ACGT'
@@ -231,6 +232,11 @@ def run_single_experiment(num_of_strands, len_of_strands, logic_func, own_list=N
         dna_list = own_list
 
     dna_list_copy = copy.deepcopy(dna_list)
+    dna_list_copy_2 = copy.deepcopy(dna_list)
+
+    optimal_soultion = get_optimal_row_solution(dna_list_copy_2)
+    print(f"The optimal solution is: {optimal_soultion}")
+
 
     num_of_cycles = synthezise(dna_list, logic_func)
     # print(f"The num of cycles for selected logic: {num_of_cycles}")
@@ -238,103 +244,19 @@ def run_single_experiment(num_of_strands, len_of_strands, logic_func, own_list=N
     num_of_cycles_control_group = synthezise(dna_list_copy, consume_logic_random)
     # print(f"The num of cycles for random logic: {num_of_cycles_control_group}")
 
+    # Stats:
+    diff_between_optimal_cycles_tested_logic = num_of_cycles - optimal_soultion
+    diff_between_optimal_cycles_random_logic = num_of_cycles_control_group - optimal_soultion
+
     cycles_saved = num_of_cycles_control_group - num_of_cycles
     percentage_save = num_of_cycles_control_group / num_of_cycles
 
 
+
     print(f"The amount of cycles saved: {cycles_saved}")
+    print(f"Diff from optimal solution: {diff_between_optimal_cycles_tested_logic}")
 
     return cycles_saved, percentage_save
-
-# Solve the problem!
-from collections import deque
-
-def bfs_shortest_distance(graph, start, target):
-    queue = deque([start])
-    distances = {start: 0}  # Distance from start to each node
-
-    while queue:
-        node = queue.popleft()
-
-        if node == target:  # Stop early if we reach the target
-            return distances[node]
-
-        for neighbor in graph.get(node, []):
-            if neighbor not in distances:  # If not visited
-                distances[neighbor] = distances[node] + 1
-                queue.append(neighbor)
-
-    return -1  # Return -1 if the target is unreachable
-
-
-from itertools import product
-
-def create_graph_from_strands(dna_list):
-    assert dna_list
-
-    # create vertices
-    graph = {}
-    len_of_strands = len(dna_list[0])
-    num_of_strands = len(dna_list)
-    # tuples = list(product(range(len_of_strands), repeat=len_of_strands))
-    # tuples_as_lists = [list(tup) for tup in tuples]  # Convert tuples to list
-    # tuples2 = list(product(tuples, DNA_BASES))
-    # tuples_as_lists2 = [list(tup) for tup in tuples2]  # Convert tuples to list
-
-    my_list = [list(tup) for tup in product(range(len_of_strands), repeat=len_of_strands)]
-    vertices_list = [list(tup) for tup in product(my_list, DNA_BASES)]
-    print(vertices_list)
-
-    #add edges
-    for vertice in vertices_list:
-
-        vertice_as_tuple = tuple(tuple(inner_list) for inner_list in vertice)
-        graph[vertice_as_tuple] = []
-
-        print(vertice)
-        list_of_possible_edges = []
-        vertice_state = vertice[0]
-        vertice_base = vertice[1]
-        for i in range(num_of_strands):
-            curr_strand = dna_list[i]
-            curr_strand_next_base_index = vertice_state[i]
-            if curr_strand_next_base_index >= len_of_strands:
-                continue
-
-            curr_strand_next_base = curr_strand[curr_strand_next_base_index]
-            if curr_strand_next_base == get_next_base(vertice_base):
-                # Add edge
-                # Update the index
-                vertice_to_connect_to_state = copy.deepcopy(vertice_state)
-                vertice_to_connect_to_state[i] = vertice_to_connect_to_state[i] + 1
-                # Update the base
-                vertice_to_connect_to_base = get_next_base(vertice_base)
-
-                vertice_to_connect_to = [vertice_to_connect_to_state, vertice_to_connect_to_base]
-                graph[vertice_as_tuple].append(vertice_to_connect_to)
-
-    print(graph)
-
-
-# graph = {
-#     0: [1, 2],
-#     1: [3],
-#     2: [3, 4],
-#     3: [5],
-#     4: [5],
-#     5: []
-# }
-
-# start, target = 0, 5
-# print(bfs_shortest_distance(graph, start, target))
-# # Output: 3 (e.g., 0 → 1 → 3 → 5 or 0 → 2 → 3 → 5)
-
-
-
-
-
-
-
 
 import os
 import sys
@@ -345,8 +267,7 @@ def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 if __name__ == '__main__':
-    run_experiment(4, 200, consume_logic_lookahead_one_v3)
+    #run_experiment(4, 200, consume_logic_lookahead_one_v3)
 
-     #run_single_experiment(6, 200, consume_logic_lookahead_one_v3)
-    create_graph_from_strands(["ACG", "CCG"])
+    run_single_experiment(5, 5, consume_logic_lookahead_one_v3)
 

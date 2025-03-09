@@ -6,6 +6,7 @@ import sys
 import copy
 import numpy as np
 from direct_solvers import get_optimal_row_solution
+from graphs import plot_simple_graph
 
 # Globals:
 DNA_BASES = 'ACGT'
@@ -291,6 +292,8 @@ def run_experiment(num_of_strands, len_of_strands, logic_func):
     print(f"The mean is: {mean}")
     print(f"The percent is is: {percent_mean}")
 
+    return mean, percent_mean
+
 
 def run_single_experiment(num_of_strands, len_of_strands, logic_func, own_list=None):
     if own_list is None:
@@ -300,10 +303,10 @@ def run_single_experiment(num_of_strands, len_of_strands, logic_func, own_list=N
 
     dna_list_copy = copy.deepcopy(dna_list)
 
-    num_of_cycles = synthezise(dna_list, logic_func, should_visualize=False)
+    num_of_cycles = synthezise(dna_list, logic_func, should_visualize=True)
     # print(f"The num of cycles for selected logic: {num_of_cycles}")
 
-    num_of_cycles_control_group = synthezise(dna_list_copy, consume_logic_random, should_visualize=False)
+    num_of_cycles_control_group = synthezise(dna_list_copy, consume_logic_random, should_visualize=True)
     # print(f"The num of cycles for random logic: {num_of_cycles_control_group}")
 
     cycles_saved = num_of_cycles_control_group - num_of_cycles
@@ -320,7 +323,16 @@ def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 if __name__ == '__main__':
-    run_experiment(3, 100, consume_logic_lookahead_one_v1)
+    # num_of_strands_list = [2, 3,4, 5,6,7, 8, 10,15, 20, 30]
+    # mean_list = []
+    # perc_list = []
+    # for i in num_of_strands_list:
+    #     mean, perc = run_experiment(i, 100, consume_logic_lookahead_one_v1)
+    #     mean_list.append(mean)
+    #     perc_list.append(perc)
+    #
+    # plot_simple_graph(num_of_strands_list, perc_list, "Number of Strands", "Mean Overhead Cycles", "Mean of Overhead Cycles with respect to Number of Strands")
+    # run_experiment(3, 100, consume_logic_lookahead_one_v1)
 
-    #run_single_experiment(5, 20, consume_logic_lookahead_one_v3)
+    run_single_experiment(5, 20, consume_logic_lookahead_one_v1)
 

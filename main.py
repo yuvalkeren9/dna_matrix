@@ -11,16 +11,25 @@ from direct_solvers import get_optimal_row_solution
 DNA_BASES = 'ACGT'
 DEBUG = False
 
+#trying sphnix
+def my_function(param1, param2):
+    """
+    This is an example function.
+
+    :param param1: The first parameter.
+    :param param2: The second parameter.
+    :return: A string describing the operation.
+    """
+    return f"Result of {param1} and {param2}"
+
 # Functions to set up experiments
 def create_random_strand(length):
     """
     Generates a random DNA strand of the given length.
 
     Parameters:
-    length (int): The length of the DNA strand.
-
-    Returns:
-    str: A string representing the DNA strand consisting of 'A', 'C', 'G', 'T'.
+    :param length:  The length of the DNA strand.
+    :return: A string describing the DNA strand.
     """
     return ''.join(random.choice("ACGT") for _ in range(length))
 
@@ -29,18 +38,21 @@ def create_dna_list(num_of_strands, length_of_strands):
     """
     Generates a list of DNA strands, to stimulate a row in the synthesis machine.
 
-    Parameters:
-    num_of_strands (int): The number of strands to generate.
-    length_of_strands (int): The length of the DNA strands.
-
-    Returns:
-    list: A list of strings representing the DNA strands consisting of 'A', 'C', 'G', 'T'.
+    :param num_of_strands: The number of strands.
+    :param length_of_strands: The length of the strands.
+    :return: A list of strings representing the DNA strands consisting of 'A', 'C', 'G', 'T'.
     """
     return [create_random_strand(length_of_strands) for _ in range(num_of_strands)]
 
 
 # Functions for consuming
 def consume_base(index, dna_list):
+    """
+    Remove a base from a dna strand, dna_list[index]
+
+    :param index: The strand to pick from dna_list.
+    :param dna_list: The list of the dna strands.
+    """
     if 0 <= index <= len(dna_list):
         dna_list[index] = dna_list[index][1:]
         if dna_list[index] == "":
@@ -50,6 +62,13 @@ def consume_base(index, dna_list):
 
 
 def consume_logic_random(dna_list, base):
+    """
+    A consume logic function, which picks a strand at random to consume a base from.
+
+    :param dna_list: A list of dna strands.
+    :param base: The base to consume.
+    :return: The strand to consume
+    """
     assert dna_list
 
     # Filter the strands that begin with the given base

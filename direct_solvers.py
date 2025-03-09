@@ -3,6 +3,15 @@ from collections import deque
 import copy
 
 def bfs_shortest_distance(graph, start, target):
+    """
+    Perform BFS shortest distance between start and target.
+
+    :param graph: The graph to traverse.
+    :param start: The starting vertice to traverse from.
+    :param target: The target vertice to calculate distance to.
+
+    :return: The distance between the start and target vertices.
+    """
     queue = deque([start])
     distances = {start: 0}  # Distance from start to each node
 
@@ -23,12 +32,15 @@ def bfs_shortest_distance(graph, start, target):
 from itertools import product
 
 def create_graph_from_strands(dna_list):
+    """
+    Perform BFS shortest distance between start and target.
+
+    :param dna_list: The list of DNA strings.
+    :return: A graph describing all the possible states in the system.
+    """
     assert dna_list
 
     from main import get_next_base, DNA_BASES
-
-
-    # print(dna_list)
 
     # create vertices
     graph = {}
@@ -38,11 +50,9 @@ def create_graph_from_strands(dna_list):
     # tuples_as_lists = [list(tup) for tup in tuples]  # Convert tuples to list
     # tuples2 = list(product(tuples, DNA_BASES))
     # tuples_as_lists2 = [list(tup) for tup in tuples2]  # Convert tuples to list
-    print("starting optimal solution")
 
     my_list = [list(tup) for tup in product(range(len_of_strands + 1), repeat=num_of_strands)]
     vertices_list = [list(tup) for tup in product(my_list, DNA_BASES)]
-    print("wuff")
 
     #add edges
     for vertice in vertices_list:
@@ -85,6 +95,12 @@ def create_graph_from_strands(dna_list):
     return graph
 
 def get_optimal_row_solution(dna_list):
+    """
+    Find the minimum number of cycles required to synthesize a row of DNA strands.
+
+    :param dna_list: The list of DNA strings.
+    :return: The minimum number of cycles.
+    """
     assert dna_list
     from main import DNA_BASES
 

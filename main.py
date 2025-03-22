@@ -303,16 +303,81 @@ def run_single_experiment(num_of_strands, len_of_strands, logic_func, own_list=N
 
     dna_list_copy = copy.deepcopy(dna_list)
 
-    num_of_cycles = synthezise(dna_list, logic_func, should_visualize=True)
+    num_of_cycles = synthezise(dna_list, logic_func, should_visualize=False)
     # print(f"The num of cycles for selected logic: {num_of_cycles}")
 
-    num_of_cycles_control_group = synthezise(dna_list_copy, consume_logic_random, should_visualize=True)
+    num_of_cycles_control_group = synthezise(dna_list_copy, consume_logic_random, should_visualize=False)
     # print(f"The num of cycles for random logic: {num_of_cycles_control_group}")
 
     cycles_saved = num_of_cycles_control_group - num_of_cycles
     percentage_save = num_of_cycles_control_group / num_of_cycles
 
     return cycles_saved, percentage_save
+
+
+logic_functions = [
+        consume_logic_lookahead_one_v1,
+        consume_logic_lookahead_one_v2,
+        consume_logic_lookahead_one_v3,
+        consume_logic_lookahead_one_v4]
+
+# Get function names as strings
+logic_function_names = [func.__name__ for func in logic_functions]
+
+def test_all_heuristics(num_of_strands_list):
+    import matplotlib.pyplot as plt
+
+    num_of_logic_funcs = len(logic_functions)
+
+    cycles_lists_mean = [[] for _ in range(num_of_logic_funcs)]
+    cycles_lists_percent = [[] for _ in range(num_of_logic_funcs)]
+
+    for j in range(len(num_of_strands_list)):
+        cycles_lists = [[] for _ in range(num_of_logic_funcs)]
+        # Repeat experiment 100 times
+        print(f'starting cycle number {j}')
+        cycles_saved_lists = [[] for _ in range(num_of_logic_funcs)]
+        percent_saved_lists = [[] for _ in range(num_of_logic_funcs)]
+        for _ in range (50):
+            dna_list = create_dna_list(num_of_strands_list[j], 50)
+            for i in range(num_of_logic_funcs):
+                dna_list_copy = copy.deepcopy(dna_list)
+                cycles_saved, percent_saved = run_single_experiment(_,_, logic_functions[i], dna_list_copy)
+                cycles_saved_lists[i].append(cycles_saved)
+                percent_saved_lists[i].append(percent_saved)
+        for i in range(num_of_logic_funcs):
+            cycles_lists_mean[i].append(np.mean(cycles_saved_lists[i]))
+            cycles_lists_percent[i].append(np.mean(percent_saved_lists[i]))
+
+    # Plot the graph
+    plt.figure(figsize=(8, 5))
+    color_list = ['b', 'g', 'r', 'm']
+    for i in range(len(logic_function_names)):
+        plt.plot(num_of_strands_list, cycles_lists_mean[i], label=logic_function_names[i], color=color_list[i])
+
+    # Labels and title
+    plt.xlabel("Number of Strands")
+    plt.ylabel("Reduced Overhead Cycles")
+    plt.title("Impact of Heuristic Choice on Overhead Cycle Reduction")
+    plt.legend()  # Show legend
+    plt.grid(True)  # Enable grid
+
+    # Show the plot
+    plt.show()
+
+    #percent graph
+    plt.figure(figsize=(8, 5))
+    for i in range(len(logic_function_names)):
+        plt.plot(num_of_strands_list, cycles_lists_percent[i], label=logic_function_names[i], color=color_list[i])
+
+    # Labels and title
+    plt.xlabel("Number of Strands")
+    plt.ylabel("Reduced Overhead Cycles (%)")
+    plt.title("Impact of Heuristic Choice on Overhead Cycle Reduction (%)")
+    plt.legend()  # Show legend
+    plt.grid(True)  # Enable grid
+
+    plt.show()
 
 import os
 import sys
@@ -334,5 +399,6 @@ if __name__ == '__main__':
     # plot_simple_graph(num_of_strands_list, perc_list, "Number of Strands", "Mean Overhead Cycles", "Mean of Overhead Cycles with respect to Number of Strands")
     # run_experiment(3, 100, consume_logic_lookahead_one_v1)
 
-    run_single_experiment(5, 20, consume_logic_lookahead_one_v1)
+    # run_single_experiment(5, 20, consume_logic_lookahead_one_v1)
+    test_all_heuristics([2,3,4,5,6,7,8,10,12,15,20,25,30])
 

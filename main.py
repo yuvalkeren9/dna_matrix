@@ -387,18 +387,172 @@ def clear_console():
     # Works for both Windows and Linux/Mac
     os.system('cls' if os.name == 'nt' else 'clear')
 
+
+def shift_dna_bases(strand: str, offset: int) -> str:
+    """
+    Shifts each base in the DNA strand by the given offset in the order A -> C -> G -> T -> A.
+
+    :param strand: A string representing the DNA sequence (e.g., "ACGT").
+    :param offset: An integer specifying how many steps to shift each base.
+    :return: A new DNA strand with bases shifted.
+    """
+    base_map = {base: i for i, base in enumerate(DNA_BASES)}
+
+    shifted_strand = "".join(DNA_BASES[(base_map[base] + offset) % 4] for base in strand)
+    return shifted_strand
+
+
+def count_dna_bases(strand: str) -> dict:
+    """
+    Counts the number of occurrences of each DNA base (A, C, G, T) in the given strand.
+
+    :param strand: A string representing the DNA sequence (e.g., "ACGT").
+    :return: A dictionary with counts of each base.
+    """
+    return {base: strand.count(base) for base in DNA_BASES}
+
+
+def balance_dna_strands(strand1: str, strand2: str) -> tuple:
+    """
+    Determines the optimal shift for each strand to achieve the best balance of bases.
+
+    :param strand1: The first DNA strand.
+    :param strand2: The second DNA strand.
+    :return: A tuple containing the best shift values for strand1 and strand2.
+    """
+    best_shift1, best_shift2 = 0, 0
+    min_imbalance = float('inf')
+    dna_strand_length = len(strand1)
+
+    for shift1 in range(len(DNA_BASES)):
+        shifted1 = shift_dna_bases(strand1, shift1)
+        count1 = count_dna_bases(shifted1)
+
+        for shift2 in range(len(DNA_BASES)):
+            shifted2 = shift_dna_bases(strand2, shift2)
+            count2 = count_dna_bases(shifted2)
+
+            total_balance = sum(abs(count1[base] + count2[base] - (2*(dna_strand_length / 4))) for base in DNA_BASES)
+
+            if total_balance < min_imbalance:
+                min_imbalance = total_balance
+                best_shift1, best_shift2 = shift1, shift2
+
+    best_shifted_strand1 = shift_dna_bases(strand1, best_shift1) + DNA_BASES[best_shift1]
+    best_shifted_strand2 = shift_dna_bases(strand2, best_shift2) + DNA_BASES[best_shift2]
+
+    # best_shifted_strand1 = shift_dna_bases(strand1, best_shift1)
+    # best_shifted_strand2 = shift_dna_bases(strand2, best_shift2)
+
+    return best_shifted_strand1, best_shifted_strand2
+
+
+def balance_dna_strands2(dna_strands: list) -> list:
+    """
+    Determines the optimal shift for each DNA strand to achieve the best balance of bases across all strands.
+
+    :param dna_strands: Multiple DNA strands.
+    :return: A tuple containing the best shifted strands.
+    """
+    import itertools
+
+    best_shifts = [0] * len(dna_strands)
+    min_imbalance = float('inf')
+    dna_strand_length = len(dna_strands[0])
+
+    # Iterate over all strands
+    for shifts in itertools.product(range(len(DNA_BASES)), repeat=len(dna_strands)):
+        total_balance = 0
+
+        # For each strand, apply the shifts and compute the imbalance
+        shifted_strands = []
+        for idx, shift in enumerate(shifts):
+            shifted_strand = shift_dna_bases(dna_strands[idx], shift)
+            count = count_dna_bases(shifted_strand)
+            shifted_strands.append(shifted_strand)
+
+            # Add up imbalance for this strand
+            total_balance += sum(abs(count[base] - (dna_strand_length / 4)) for base in DNA_BASES)
+
+
+        # Update the best shifts if this combination reduces imbalance
+        if total_balance < min_imbalance:
+            min_imbalance = total_balance
+            best_shifts = list(shifts)
+
+    # Apply the best shifts to each strand and return them
+    best_shifted_strands = [shift_dna_bases(strand, best_shifts[idx]) + DNA_BASES[best_shifts[idx]] for idx, strand in
+                            enumerate(dna_strands)]
+
+    return best_shifted_strands
+
+def process_dna_pairs(dna_list: list) -> list:
+    """
+    Processes pairs of DNA strands from the list, applying the optimal shift and appending
+    the corresponding base to each strand.
+
+    :param dna_list: A list of DNA strands (even size).
+    :return: A list of processed DNA strands with shift indicators appended.
+    """
+    if len(dna_list) % 2 != 0:
+        raise ValueError("The list must have an even number of DNA strands.")
+
+    processed_strands = []
+
+    for i in range(0, len(dna_list), 2):
+        strand1 = dna_list[i]
+        strand2 = dna_list[i + 1]
+
+        best_shifted_strand1, best_shifted_strand2 = balance_dna_strands(strand1, strand2)
+
+        # Append both shifted strands to the result list
+        processed_strands.append(best_shifted_strand1)
+        processed_strands.append(best_shifted_strand2)
+
+    return processed_strands
+
+def run_experiment_change_dna_strands(num_of_strands, len_of_strands, logic_func):
+    cycle_results = []
+    percent_results = []
+    for _ in range(300):
+        dna_list = create_dna_list(num_of_strands, len_of_strands)
+        shifted_list = process_dna_pairs(dna_list)
+
+        num_of_cycles = synthezise(shifted_list, logic_func, should_visualize=False)
+        # print(f"The num of cycles for selected logic: {num_of_cycles}")
+
+        num_of_cycles_control_group = synthezise(dna_list, logic_func, should_visualize=False)
+        # print(f"The num of cycles for random logic: {num_of_cycles_control_group}")
+
+        cycles_saved = num_of_cycles_control_group - num_of_cycles
+        percentage_save = num_of_cycles_control_group / num_of_cycles
+
+        cycle_results.append(cycles_saved)
+        percent_results.append(percentage_save)
+
+    mean = np.mean(cycle_results)
+    percent_mean = np.mean(percent_results)
+    # print(f"The mean is: {mean}")
+    # print(f"The percent is is: {percent_mean}")
+
+    return mean, percent_mean
+
 if __name__ == '__main__':
-    # num_of_strands_list = [2, 3,4, 5,6,7, 8, 10,15, 20, 30]
-    # mean_list = []
-    # perc_list = []
-    # for i in num_of_strands_list:
-    #     mean, perc = run_experiment(i, 100, consume_logic_lookahead_one_v1)
-    #     mean_list.append(mean)
-    #     perc_list.append(perc)
-    #
-    # plot_simple_graph(num_of_strands_list, perc_list, "Number of Strands", "Mean Overhead Cycles", "Mean of Overhead Cycles with respect to Number of Strands")
+    num_of_strands_list = [2,4, 6,8, 10,12,14,16,18,20]
+    mean_list = []
+    perc_list = []
+    for i in num_of_strands_list:
+        mean1, perc1 = run_experiment_change_dna_strands(i, 100, consume_logic_random)
+        mean_list.append(mean1)
+        perc_list.append(perc1)
+
+    plot_simple_graph(num_of_strands_list, perc_list, "Number of Strands", "Mean Overhead Cycles (%)", "Mean of Overhead Cycles Using Random Selection (%)")
     # run_experiment(3, 100, consume_logic_lookahead_one_v1)
 
-    # run_single_experiment(5, 20, consume_logic_lookahead_one_v1)
-    test_all_heuristics([2,3,4,5,6,7,8,10,12,15,20,25,30])
+    # # run_single_experiment(5, 20, consume_logic_lookahead_one_v1)
+    # # test_all_heuristics([2,3,4,5,6,7,8,10,12,15,20,25,30])
+    # print(process_dna_pairs(["ACG", "ACG", "ACG", "ACG"]))
+    # run_experiment_change_dna_strands(4,200,consume_logic_random)
+    # print(balance_dna_strands2("AC","AC","AC","AC"))
+
 

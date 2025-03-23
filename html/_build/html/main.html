@@ -1,0 +1,322 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>main module &mdash; DNA Strands in Matrix Final Project 1.00 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=da1d7f10"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="utils module" href="utils.html" />
+    <link rel="prev" title="lookahead module" href="lookahead.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            DNA Strands in Matrix Final Project
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">project_files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="balance_histogram.html">balance_histogram module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="direct_solvers.html">direct_solvers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphs.html">graphs module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lookahead.html">lookahead module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">main module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#main.balance_dna_strands"><code class="docutils literal notranslate"><span class="pre">balance_dna_strands()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main.balance_dna_strands2"><code class="docutils literal notranslate"><span class="pre">balance_dna_strands2()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main.clear_console"><code class="docutils literal notranslate"><span class="pre">clear_console()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main.consume_base"><code class="docutils literal notranslate"><span class="pre">consume_base()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main.consume_with_logic"><code class="docutils literal notranslate"><span class="pre">consume_with_logic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main.count_dna_bases"><code class="docutils literal notranslate"><span class="pre">count_dna_bases()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main.create_dna_list"><code class="docutils literal notranslate"><span class="pre">create_dna_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main.create_random_strand"><code class="docutils literal notranslate"><span class="pre">create_random_strand()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main.process_dna_pairs"><code class="docutils literal notranslate"><span class="pre">process_dna_pairs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main.run_experiment"><code class="docutils literal notranslate"><span class="pre">run_experiment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main.run_experiment_change_dna_strands"><code class="docutils literal notranslate"><span class="pre">run_experiment_change_dna_strands()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main.run_single_experiment"><code class="docutils literal notranslate"><span class="pre">run_single_experiment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main.shift_dna_bases"><code class="docutils literal notranslate"><span class="pre">shift_dna_bases()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main.synthesize"><code class="docutils literal notranslate"><span class="pre">synthesize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main.test_all_heuristics"><code class="docutils literal notranslate"><span class="pre">test_all_heuristics()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DNA Strands in Matrix Final Project</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">project_files</a></li>
+      <li class="breadcrumb-item active">main module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/main.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-main">
+<span id="main-module"></span><h1>main module<a class="headerlink" href="#module-main" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="main.balance_dna_strands">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">balance_dna_strands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strand1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strand2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/main.html#balance_dna_strands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.balance_dna_strands" title="Link to this definition"></a></dt>
+<dd><p>Determines the optimal shift for each strand to achieve the best balance of bases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strand1</strong> – The first DNA strand.</p></li>
+<li><p><strong>strand2</strong> – The second DNA strand.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the best shift values for strand1 and strand2.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.balance_dna_strands2">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">balance_dna_strands2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dna_strands</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/main.html#balance_dna_strands2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.balance_dna_strands2" title="Link to this definition"></a></dt>
+<dd><p>Determines the optimal shift for each DNA strand to achieve the best balance of bases across all strands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dna_strands</strong> – Multiple DNA strands.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the best shifted strands.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.clear_console">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">clear_console</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#clear_console"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.clear_console" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.consume_base">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">consume_base</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dna_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#consume_base"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.consume_base" title="Link to this definition"></a></dt>
+<dd><p>Remove a base from a dna strand, dna_list[index]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> – The strand to pick from dna_list.</p></li>
+<li><p><strong>dna_list</strong> – The list of the dna strands.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.consume_with_logic">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">consume_with_logic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dna_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#consume_with_logic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.consume_with_logic" title="Link to this definition"></a></dt>
+<dd><p>Use a consume function to decide which base to remove</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dna_list</strong> – The list of the dna strands.</p></li>
+<li><p><strong>base</strong> – The base to consume</p></li>
+<li><p><strong>func</strong> – The logic function to consume with.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.count_dna_bases">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">count_dna_bases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strand</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/main.html#count_dna_bases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.count_dna_bases" title="Link to this definition"></a></dt>
+<dd><p>Counts the number of occurrences of each DNA base (A, C, G, T) in the given strand.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>strand</strong> – A string representing the DNA sequence (e.g., “ACGT”).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with counts of each base.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.create_dna_list">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">create_dna_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_of_strands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_of_strands</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#create_dna_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.create_dna_list" title="Link to this definition"></a></dt>
+<dd><p>Generates a list of DNA strands, to stimulate a row in the synthesis machine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_of_strands</strong> – The number of strands.</p></li>
+<li><p><strong>length_of_strands</strong> – The length of the strands.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of strings representing the DNA strands consisting of ‘A’, ‘C’, ‘G’, ‘T’.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.create_random_strand">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">create_random_strand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#create_random_strand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.create_random_strand" title="Link to this definition"></a></dt>
+<dd><p>Generates a random DNA strand of the given length.</p>
+<p>Parameters:
+:param length:  The length of the DNA strand.
+:return: A string describing the DNA strand.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.process_dna_pairs">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">process_dna_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dna_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/main.html#process_dna_pairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.process_dna_pairs" title="Link to this definition"></a></dt>
+<dd><p>Processes pairs of DNA strands from the list, applying the optimal shift and appending
+the corresponding base to each strand.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dna_list</strong> – A list of DNA strands (even size).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of processed DNA strands with shift indicators appended.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.run_experiment">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">run_experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_of_strands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_of_strands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logic_func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#run_experiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.run_experiment" title="Link to this definition"></a></dt>
+<dd><p>Run an experiment. Will generate a list of strands given the parameters, and synthesize them.
+One time it will synthesize with the random logic, the second time with the logic func given.
+:param num_of_strands: The amount of strands.
+:param len_of_strands: The len of each strand.
+:param logic_func: The logic function to test against the random picking algorithm.
+:return: The mean and percent of cycles saved (since this is repeated 300 times, we return a mean)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.run_experiment_change_dna_strands">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">run_experiment_change_dna_strands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_of_strands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_of_strands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logic_func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#run_experiment_change_dna_strands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.run_experiment_change_dna_strands" title="Link to this definition"></a></dt>
+<dd><p>Runs a single experiment of that involves changing DNA strands.
+:param num_of_strands: The number of strands to use.
+:param len_of_strands: The length of each strand
+:param logic_func: Which logic func to use to consume
+:return: The mean and percent of change with respect to random.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.run_single_experiment">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">run_single_experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_of_strands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_of_strands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logic_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">own_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#run_single_experiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.run_single_experiment" title="Link to this definition"></a></dt>
+<dd><p>An auxiliary function of run_experiment. Runs a single experiment.
+:param num_of_strands: How many strands in the row.
+:param len_of_strands: The len of each strand.
+:param logic_func: The function to use to consume.
+:param own_list: A list of DNA strands. If given, the first two parameters are ignored, and the list will be used.
+:return: The difference in cycles between random and logic_func (also return the percent change).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.shift_dna_bases">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">shift_dna_bases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strand</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/main.html#shift_dna_bases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.shift_dna_bases" title="Link to this definition"></a></dt>
+<dd><p>Shifts each base in the DNA strand by the given offset in the order A -&gt; C -&gt; G -&gt; T -&gt; A.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strand</strong> – A string representing the DNA sequence (e.g., “ACGT”).</p></li>
+<li><p><strong>offset</strong> – An integer specifying how many steps to shift each base.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new DNA strand with bases shifted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.synthesize">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">synthesize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dna_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">should_visualize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#synthesize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.synthesize" title="Link to this definition"></a></dt>
+<dd><p>Given a dna_list that represents a row, synthesize the strands
+:param dna_list: The dna strands in a row
+:param func: The logic func that will decide at each step which strand to pick
+:param should_visualize: If true, and run through command line (and not some IDE)
+will interactively show the process
+:return: The amount of cycles it took to synthesize</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.test_all_heuristics">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">test_all_heuristics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_of_strands_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#test_all_heuristics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.test_all_heuristics" title="Link to this definition"></a></dt>
+<dd><p>Tests all of our heuristics at the same time.
+:param num_of_strands_list: Each cell in the list will run an experiment with the cell’s number of strands.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="lookahead.html" class="btn btn-neutral float-left" title="lookahead module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utils.html" class="btn btn-neutral float-right" title="utils module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Yuval keren, Aviran Sapir.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

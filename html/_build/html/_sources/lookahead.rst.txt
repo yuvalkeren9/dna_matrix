@@ -1,0 +1,7 @@
+lookahead module
+================
+
+.. automodule:: lookahead
+   :members:
+   :show-inheritance:
+   :undoc-members:

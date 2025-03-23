@@ -1,0 +1,536 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>main &mdash; DNA Strands in Matrix Final Project 1.00 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=da1d7f10"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            DNA Strands in Matrix Final Project
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">project_files</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DNA Strands in Matrix Final Project</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">main</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for main</h1><div class="highlight"><pre>
+<span></span><span class="c1"># DNA project</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">graphs</span> <span class="kn">import</span> <span class="n">plot_simple_graph</span>
+<span class="kn">from</span> <span class="nn">lookahead</span> <span class="kn">import</span> <span class="n">consume_logic_lookahead_one_v1</span><span class="p">,</span> <span class="n">consume_logic_lookahead_one_v2</span>
+<span class="kn">from</span> <span class="nn">lookahead</span> <span class="kn">import</span> <span class="n">consume_logic_lookahead_one_v3</span><span class="p">,</span> <span class="n">consume_logic_lookahead_one_v4</span>
+<span class="kn">from</span> <span class="nn">lookahead</span> <span class="kn">import</span> <span class="n">consume_logic_random</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">DNA_BASES</span><span class="p">,</span> <span class="n">get_next_base</span>
+
+<span class="c1"># Globals:</span>
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Functions to set up experiments</span>
+<div class="viewcode-block" id="create_random_strand">
+<a class="viewcode-back" href="../main.html#main.create_random_strand">[docs]</a>
+<span class="k">def</span> <span class="nf">create_random_strand</span><span class="p">(</span><span class="n">length</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a random DNA strand of the given length.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    :param length:  The length of the DNA strand.</span>
+<span class="sd">    :return: A string describing the DNA strand.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="create_dna_list">
+<a class="viewcode-back" href="../main.html#main.create_dna_list">[docs]</a>
+<span class="k">def</span> <span class="nf">create_dna_list</span><span class="p">(</span><span class="n">num_of_strands</span><span class="p">,</span> <span class="n">length_of_strands</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a list of DNA strands, to stimulate a row in the synthesis machine.</span>
+
+<span class="sd">    :param num_of_strands: The number of strands.</span>
+<span class="sd">    :param length_of_strands: The length of the strands.</span>
+<span class="sd">    :return: A list of strings representing the DNA strands consisting of &#39;A&#39;, &#39;C&#39;, &#39;G&#39;, &#39;T&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">create_random_strand</span><span class="p">(</span><span class="n">length_of_strands</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_of_strands</span><span class="p">)]</span></div>
+
+
+
+<span class="c1"># Functions for consuming</span>
+<div class="viewcode-block" id="consume_base">
+<a class="viewcode-back" href="../main.html#main.consume_base">[docs]</a>
+<span class="k">def</span> <span class="nf">consume_base</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">dna_list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove a base from a dna strand, dna_list[index]</span>
+
+<span class="sd">    :param index: The strand to pick from dna_list.</span>
+<span class="sd">    :param dna_list: The list of the dna strands.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dna_list</span><span class="p">):</span>
+        <span class="n">dna_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">dna_list</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">if</span> <span class="n">dna_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">dna_list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;index is out of range!&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="consume_with_logic">
+<a class="viewcode-back" href="../main.html#main.consume_with_logic">[docs]</a>
+<span class="k">def</span> <span class="nf">consume_with_logic</span><span class="p">(</span><span class="n">dna_list</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Use a consume function to decide which base to remove</span>
+
+<span class="sd">    :param dna_list: The list of the dna strands.</span>
+<span class="sd">    :param base: The base to consume</span>
+<span class="sd">    :param func: The logic function to consume with.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="n">dna_list</span>
+
+    <span class="n">selected_strand</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">dna_list</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">selected_strand</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Find the index of the selected strand in the original list</span>
+    <span class="n">selected_index</span> <span class="o">=</span> <span class="n">dna_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">selected_strand</span><span class="p">)</span> <span class="k">if</span> <span class="n">selected_strand</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="n">consume_base</span><span class="p">(</span><span class="n">selected_index</span><span class="p">,</span> <span class="n">dna_list</span><span class="p">)</span>
+
+    <span class="k">return</span></div>
+
+
+
+<div class="viewcode-block" id="synthesize">
+<a class="viewcode-back" href="../main.html#main.synthesize">[docs]</a>
+<span class="k">def</span> <span class="nf">synthesize</span><span class="p">(</span><span class="n">dna_list</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">should_visualize</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a dna_list that represents a row, synthesize the strands</span>
+<span class="sd">    :param dna_list: The dna strands in a row</span>
+<span class="sd">    :param func: The logic func that will decide at each step which strand to pick</span>
+<span class="sd">    :param should_visualize: If true, and run through command line (and not some IDE)</span>
+<span class="sd">    will interactively show the process</span>
+<span class="sd">    :return: The amount of cycles it took to synthesize</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">DNA_BASES</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">num_of_cycles</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">dna_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">should_visualize</span><span class="p">:</span>
+            <span class="n">clear_console</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">strand</span> <span class="ow">in</span> <span class="n">dna_list</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">strand</span><span class="p">)</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="n">consume_with_logic</span><span class="p">(</span><span class="n">dna_list</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+
+        <span class="n">num_of_cycles</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">get_next_base</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">num_of_cycles</span></div>
+
+
+
+<div class="viewcode-block" id="run_experiment">
+<a class="viewcode-back" href="../main.html#main.run_experiment">[docs]</a>
+<span class="k">def</span> <span class="nf">run_experiment</span><span class="p">(</span><span class="n">num_of_strands</span><span class="p">,</span> <span class="n">len_of_strands</span><span class="p">,</span> <span class="n">logic_func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run an experiment. Will generate a list of strands given the parameters, and synthesize them.</span>
+<span class="sd">    One time it will synthesize with the random logic, the second time with the logic func given.</span>
+<span class="sd">    :param num_of_strands: The amount of strands.</span>
+<span class="sd">    :param len_of_strands: The len of each strand.</span>
+<span class="sd">    :param logic_func: The logic function to test against the random picking algorithm.</span>
+<span class="sd">    :return: The mean and percent of cycles saved (since this is repeated 300 times, we return a mean)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cycle_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">percent_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">300</span><span class="p">):</span>
+        <span class="n">cycles</span><span class="p">,</span> <span class="n">percent</span> <span class="o">=</span> <span class="n">run_single_experiment</span><span class="p">(</span><span class="n">num_of_strands</span><span class="p">,</span> <span class="n">len_of_strands</span><span class="p">,</span> <span class="n">logic_func</span><span class="p">)</span>
+        <span class="n">cycle_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cycles</span><span class="p">)</span>
+        <span class="n">percent_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">percent</span><span class="p">)</span>
+
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cycle_results</span><span class="p">)</span>
+    <span class="n">percent_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">percent_results</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The mean is: </span><span class="si">{</span><span class="n">mean</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The percent is is: </span><span class="si">{</span><span class="n">percent_mean</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mean</span><span class="p">,</span> <span class="n">percent_mean</span></div>
+
+
+
+<div class="viewcode-block" id="run_single_experiment">
+<a class="viewcode-back" href="../main.html#main.run_single_experiment">[docs]</a>
+<span class="k">def</span> <span class="nf">run_single_experiment</span><span class="p">(</span><span class="n">num_of_strands</span><span class="p">,</span> <span class="n">len_of_strands</span><span class="p">,</span> <span class="n">logic_func</span><span class="p">,</span> <span class="n">own_list</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An auxiliary function of run_experiment. Runs a single experiment.</span>
+<span class="sd">    :param num_of_strands: How many strands in the row.</span>
+<span class="sd">    :param len_of_strands: The len of each strand.</span>
+<span class="sd">    :param logic_func: The function to use to consume.</span>
+<span class="sd">    :param own_list: A list of DNA strands. If given, the first two parameters are ignored, and the list will be used.</span>
+<span class="sd">    :return: The difference in cycles between random and logic_func (also return the percent change).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">own_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dna_list</span> <span class="o">=</span> <span class="n">create_dna_list</span><span class="p">(</span><span class="n">num_of_strands</span><span class="p">,</span> <span class="n">len_of_strands</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dna_list</span> <span class="o">=</span> <span class="n">own_list</span>
+
+    <span class="n">dna_list_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">dna_list</span><span class="p">)</span>
+
+    <span class="n">num_of_cycles</span> <span class="o">=</span> <span class="n">synthesize</span><span class="p">(</span><span class="n">dna_list</span><span class="p">,</span> <span class="n">logic_func</span><span class="p">,</span> <span class="n">should_visualize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># print(f&quot;The num of cycles for selected logic: {num_of_cycles}&quot;)</span>
+
+    <span class="n">num_of_cycles_control_group</span> <span class="o">=</span> <span class="n">synthesize</span><span class="p">(</span><span class="n">dna_list_copy</span><span class="p">,</span> <span class="n">consume_logic_random</span><span class="p">,</span> <span class="n">should_visualize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># print(f&quot;The num of cycles for random logic: {num_of_cycles_control_group}&quot;)</span>
+
+    <span class="n">cycles_saved</span> <span class="o">=</span> <span class="n">num_of_cycles_control_group</span> <span class="o">-</span> <span class="n">num_of_cycles</span>
+    <span class="n">percentage_save</span> <span class="o">=</span> <span class="n">num_of_cycles_control_group</span> <span class="o">/</span> <span class="n">num_of_cycles</span>
+
+    <span class="k">return</span> <span class="n">cycles_saved</span><span class="p">,</span> <span class="n">percentage_save</span></div>
+
+
+
+<span class="n">logic_functions</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">consume_logic_lookahead_one_v1</span><span class="p">,</span>
+        <span class="n">consume_logic_lookahead_one_v2</span><span class="p">,</span>
+        <span class="n">consume_logic_lookahead_one_v3</span><span class="p">,</span>
+        <span class="n">consume_logic_lookahead_one_v4</span><span class="p">]</span>
+
+<span class="c1"># Get function names as strings</span>
+<span class="n">logic_function_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">logic_functions</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="test_all_heuristics">
+<a class="viewcode-back" href="../main.html#main.test_all_heuristics">[docs]</a>
+<span class="k">def</span> <span class="nf">test_all_heuristics</span><span class="p">(</span><span class="n">num_of_strands_list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Tests all of our heuristics at the same time.</span>
+<span class="sd">    :param num_of_strands_list: Each cell in the list will run an experiment with the cell&#39;s number of strands.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+    <span class="n">num_of_logic_funcs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">logic_functions</span><span class="p">)</span>
+
+    <span class="n">cycles_lists_mean</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_of_logic_funcs</span><span class="p">)]</span>
+    <span class="n">cycles_lists_percent</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_of_logic_funcs</span><span class="p">)]</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">num_of_strands_list</span><span class="p">)):</span>
+        <span class="n">cycles_lists</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_of_logic_funcs</span><span class="p">)]</span>
+        <span class="c1"># Repeat experiment 100 times</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;starting cycle number </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">cycles_saved_lists</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_of_logic_funcs</span><span class="p">)]</span>
+        <span class="n">percent_saved_lists</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_of_logic_funcs</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+            <span class="n">dna_list</span> <span class="o">=</span> <span class="n">create_dna_list</span><span class="p">(</span><span class="n">num_of_strands_list</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="mi">50</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_of_logic_funcs</span><span class="p">):</span>
+                <span class="n">dna_list_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">dna_list</span><span class="p">)</span>
+                <span class="n">cycles_saved</span><span class="p">,</span> <span class="n">percent_saved</span> <span class="o">=</span> <span class="n">run_single_experiment</span><span class="p">(</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="p">,</span> <span class="n">logic_functions</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">dna_list_copy</span><span class="p">)</span>
+                <span class="n">cycles_saved_lists</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cycles_saved</span><span class="p">)</span>
+                <span class="n">percent_saved_lists</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">percent_saved</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_of_logic_funcs</span><span class="p">):</span>
+            <span class="n">cycles_lists_mean</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cycles_saved_lists</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+            <span class="n">cycles_lists_percent</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">percent_saved_lists</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+    <span class="c1"># Plot the graph</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">color_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">logic_function_names</span><span class="p">)):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">num_of_strands_list</span><span class="p">,</span> <span class="n">cycles_lists_mean</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">logic_function_names</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">color_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="c1"># Labels and title</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Number of Strands&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Reduced Overhead Cycles&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Impact of Heuristic Choice on Overhead Cycle Reduction&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>  <span class="c1"># Show legend</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Enable grid</span>
+
+    <span class="c1"># Show the plot</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1">#percent graph</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">logic_function_names</span><span class="p">)):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">num_of_strands_list</span><span class="p">,</span> <span class="n">cycles_lists_percent</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">logic_function_names</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">color_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="c1"># Labels and title</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Number of Strands&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Reduced Overhead Cycles (%)&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Impact of Heuristic Choice on Overhead Cycle Reduction (%)&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>  <span class="c1"># Show legend</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Enable grid</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<div class="viewcode-block" id="clear_console">
+<a class="viewcode-back" href="../main.html#main.clear_console">[docs]</a>
+<span class="k">def</span> <span class="nf">clear_console</span><span class="p">():</span>
+    <span class="c1"># Works for both Windows and Linux/Mac</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;cls&#39;</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;nt&#39;</span> <span class="k">else</span> <span class="s1">&#39;clear&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="shift_dna_bases">
+<a class="viewcode-back" href="../main.html#main.shift_dna_bases">[docs]</a>
+<span class="k">def</span> <span class="nf">shift_dna_bases</span><span class="p">(</span><span class="n">strand</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shifts each base in the DNA strand by the given offset in the order A -&gt; C -&gt; G -&gt; T -&gt; A.</span>
+
+<span class="sd">    :param strand: A string representing the DNA sequence (e.g., &quot;ACGT&quot;).</span>
+<span class="sd">    :param offset: An integer specifying how many steps to shift each base.</span>
+<span class="sd">    :return: A new DNA strand with bases shifted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">base_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">base</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">base</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">DNA_BASES</span><span class="p">)}</span>
+
+    <span class="n">shifted_strand</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DNA_BASES</span><span class="p">[(</span><span class="n">base_map</span><span class="p">[</span><span class="n">base</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span> <span class="o">%</span> <span class="mi">4</span><span class="p">]</span> <span class="k">for</span> <span class="n">base</span> <span class="ow">in</span> <span class="n">strand</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">shifted_strand</span></div>
+
+
+
+<div class="viewcode-block" id="count_dna_bases">
+<a class="viewcode-back" href="../main.html#main.count_dna_bases">[docs]</a>
+<span class="k">def</span> <span class="nf">count_dna_bases</span><span class="p">(</span><span class="n">strand</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Counts the number of occurrences of each DNA base (A, C, G, T) in the given strand.</span>
+
+<span class="sd">    :param strand: A string representing the DNA sequence (e.g., &quot;ACGT&quot;).</span>
+<span class="sd">    :return: A dictionary with counts of each base.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">base</span><span class="p">:</span> <span class="n">strand</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="k">for</span> <span class="n">base</span> <span class="ow">in</span> <span class="n">DNA_BASES</span><span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="balance_dna_strands">
+<a class="viewcode-back" href="../main.html#main.balance_dna_strands">[docs]</a>
+<span class="k">def</span> <span class="nf">balance_dna_strands</span><span class="p">(</span><span class="n">strand1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">strand2</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determines the optimal shift for each strand to achieve the best balance of bases.</span>
+
+<span class="sd">    :param strand1: The first DNA strand.</span>
+<span class="sd">    :param strand2: The second DNA strand.</span>
+<span class="sd">    :return: A tuple containing the best shift values for strand1 and strand2.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">best_shift1</span><span class="p">,</span> <span class="n">best_shift2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="n">min_imbalance</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+    <span class="n">dna_strand_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">strand1</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">shift1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">DNA_BASES</span><span class="p">)):</span>
+        <span class="n">shifted1</span> <span class="o">=</span> <span class="n">shift_dna_bases</span><span class="p">(</span><span class="n">strand1</span><span class="p">,</span> <span class="n">shift1</span><span class="p">)</span>
+        <span class="n">count1</span> <span class="o">=</span> <span class="n">count_dna_bases</span><span class="p">(</span><span class="n">shifted1</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">shift2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">DNA_BASES</span><span class="p">)):</span>
+            <span class="n">shifted2</span> <span class="o">=</span> <span class="n">shift_dna_bases</span><span class="p">(</span><span class="n">strand2</span><span class="p">,</span> <span class="n">shift2</span><span class="p">)</span>
+            <span class="n">count2</span> <span class="o">=</span> <span class="n">count_dna_bases</span><span class="p">(</span><span class="n">shifted2</span><span class="p">)</span>
+
+            <span class="n">total_balance</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">count1</span><span class="p">[</span><span class="n">base</span><span class="p">]</span> <span class="o">+</span> <span class="n">count2</span><span class="p">[</span><span class="n">base</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">dna_strand_length</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)))</span> <span class="k">for</span> <span class="n">base</span> <span class="ow">in</span> <span class="n">DNA_BASES</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">total_balance</span> <span class="o">&lt;</span> <span class="n">min_imbalance</span><span class="p">:</span>
+                <span class="n">min_imbalance</span> <span class="o">=</span> <span class="n">total_balance</span>
+                <span class="n">best_shift1</span><span class="p">,</span> <span class="n">best_shift2</span> <span class="o">=</span> <span class="n">shift1</span><span class="p">,</span> <span class="n">shift2</span>
+
+    <span class="n">best_shifted_strand1</span> <span class="o">=</span> <span class="n">shift_dna_bases</span><span class="p">(</span><span class="n">strand1</span><span class="p">,</span> <span class="n">best_shift1</span><span class="p">)</span> <span class="o">+</span> <span class="n">DNA_BASES</span><span class="p">[</span><span class="n">best_shift1</span><span class="p">]</span>
+    <span class="n">best_shifted_strand2</span> <span class="o">=</span> <span class="n">shift_dna_bases</span><span class="p">(</span><span class="n">strand2</span><span class="p">,</span> <span class="n">best_shift2</span><span class="p">)</span> <span class="o">+</span> <span class="n">DNA_BASES</span><span class="p">[</span><span class="n">best_shift2</span><span class="p">]</span>
+
+    <span class="c1"># best_shifted_strand1 = shift_dna_bases(strand1, best_shift1)</span>
+    <span class="c1"># best_shifted_strand2 = shift_dna_bases(strand2, best_shift2)</span>
+
+    <span class="k">return</span> <span class="n">best_shifted_strand1</span><span class="p">,</span> <span class="n">best_shifted_strand2</span></div>
+
+
+
+<div class="viewcode-block" id="balance_dna_strands2">
+<a class="viewcode-back" href="../main.html#main.balance_dna_strands2">[docs]</a>
+<span class="k">def</span> <span class="nf">balance_dna_strands2</span><span class="p">(</span><span class="n">dna_strands</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determines the optimal shift for each DNA strand to achieve the best balance of bases across all strands.</span>
+
+<span class="sd">    :param dna_strands: Multiple DNA strands.</span>
+<span class="sd">    :return: A tuple containing the best shifted strands.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">itertools</span>
+
+    <span class="n">best_shifts</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">dna_strands</span><span class="p">)</span>
+    <span class="n">min_imbalance</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+    <span class="n">dna_strand_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dna_strands</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># Iterate over all strands</span>
+    <span class="k">for</span> <span class="n">shifts</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">DNA_BASES</span><span class="p">)),</span> <span class="n">repeat</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">dna_strands</span><span class="p">)):</span>
+        <span class="n">total_balance</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># For each strand, apply the shifts and compute the imbalance</span>
+        <span class="n">shifted_strands</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">shift</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shifts</span><span class="p">):</span>
+            <span class="n">shifted_strand</span> <span class="o">=</span> <span class="n">shift_dna_bases</span><span class="p">(</span><span class="n">dna_strands</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">shift</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="n">count_dna_bases</span><span class="p">(</span><span class="n">shifted_strand</span><span class="p">)</span>
+            <span class="n">shifted_strands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shifted_strand</span><span class="p">)</span>
+
+            <span class="c1"># Add up imbalance for this strand</span>
+            <span class="n">total_balance</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">count</span><span class="p">[</span><span class="n">base</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">dna_strand_length</span> <span class="o">/</span> <span class="mi">4</span><span class="p">))</span> <span class="k">for</span> <span class="n">base</span> <span class="ow">in</span> <span class="n">DNA_BASES</span><span class="p">)</span>
+
+
+        <span class="c1"># Update the best shifts if this combination reduces imbalance</span>
+        <span class="k">if</span> <span class="n">total_balance</span> <span class="o">&lt;</span> <span class="n">min_imbalance</span><span class="p">:</span>
+            <span class="n">min_imbalance</span> <span class="o">=</span> <span class="n">total_balance</span>
+            <span class="n">best_shifts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">shifts</span><span class="p">)</span>
+
+    <span class="c1"># Apply the best shifts to each strand and return them</span>
+    <span class="n">best_shifted_strands</span> <span class="o">=</span> <span class="p">[</span><span class="n">shift_dna_bases</span><span class="p">(</span><span class="n">strand</span><span class="p">,</span> <span class="n">best_shifts</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="o">+</span> <span class="n">DNA_BASES</span><span class="p">[</span><span class="n">best_shifts</span><span class="p">[</span><span class="n">idx</span><span class="p">]]</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">strand</span> <span class="ow">in</span>
+                            <span class="nb">enumerate</span><span class="p">(</span><span class="n">dna_strands</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="n">best_shifted_strands</span></div>
+
+
+<div class="viewcode-block" id="process_dna_pairs">
+<a class="viewcode-back" href="../main.html#main.process_dna_pairs">[docs]</a>
+<span class="k">def</span> <span class="nf">process_dna_pairs</span><span class="p">(</span><span class="n">dna_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Processes pairs of DNA strands from the list, applying the optimal shift and appending</span>
+<span class="sd">    the corresponding base to each strand.</span>
+
+<span class="sd">    :param dna_list: A list of DNA strands (even size).</span>
+<span class="sd">    :return: A list of processed DNA strands with shift indicators appended.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dna_list</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The list must have an even number of DNA strands.&quot;</span><span class="p">)</span>
+
+    <span class="n">processed_strands</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dna_list</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">strand1</span> <span class="o">=</span> <span class="n">dna_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">strand2</span> <span class="o">=</span> <span class="n">dna_list</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">best_shifted_strand1</span><span class="p">,</span> <span class="n">best_shifted_strand2</span> <span class="o">=</span> <span class="n">balance_dna_strands</span><span class="p">(</span><span class="n">strand1</span><span class="p">,</span> <span class="n">strand2</span><span class="p">)</span>
+
+        <span class="c1"># Append both shifted strands to the result list</span>
+        <span class="n">processed_strands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">best_shifted_strand1</span><span class="p">)</span>
+        <span class="n">processed_strands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">best_shifted_strand2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">processed_strands</span></div>
+
+
+
+<div class="viewcode-block" id="run_experiment_change_dna_strands">
+<a class="viewcode-back" href="../main.html#main.run_experiment_change_dna_strands">[docs]</a>
+<span class="k">def</span> <span class="nf">run_experiment_change_dna_strands</span><span class="p">(</span><span class="n">num_of_strands</span><span class="p">,</span> <span class="n">len_of_strands</span><span class="p">,</span> <span class="n">logic_func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Runs a single experiment of that involves changing DNA strands.</span>
+<span class="sd">    :param num_of_strands: The number of strands to use.</span>
+<span class="sd">    :param len_of_strands: The length of each strand</span>
+<span class="sd">    :param logic_func: Which logic func to use to consume</span>
+<span class="sd">    :return: The mean and percent of change with respect to random.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cycle_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">percent_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">300</span><span class="p">):</span>
+        <span class="n">dna_list</span> <span class="o">=</span> <span class="n">create_dna_list</span><span class="p">(</span><span class="n">num_of_strands</span><span class="p">,</span> <span class="n">len_of_strands</span><span class="p">)</span>
+        <span class="n">shifted_list</span> <span class="o">=</span> <span class="n">process_dna_pairs</span><span class="p">(</span><span class="n">dna_list</span><span class="p">)</span>
+
+        <span class="n">num_of_cycles</span> <span class="o">=</span> <span class="n">synthesize</span><span class="p">(</span><span class="n">shifted_list</span><span class="p">,</span> <span class="n">logic_func</span><span class="p">,</span> <span class="n">should_visualize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># print(f&quot;The num of cycles for selected logic: {num_of_cycles}&quot;)</span>
+
+        <span class="n">num_of_cycles_control_group</span> <span class="o">=</span> <span class="n">synthesize</span><span class="p">(</span><span class="n">dna_list</span><span class="p">,</span> <span class="n">logic_func</span><span class="p">,</span> <span class="n">should_visualize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># print(f&quot;The num of cycles for random logic: {num_of_cycles_control_group}&quot;)</span>
+
+        <span class="n">cycles_saved</span> <span class="o">=</span> <span class="n">num_of_cycles_control_group</span> <span class="o">-</span> <span class="n">num_of_cycles</span>
+        <span class="n">percentage_save</span> <span class="o">=</span> <span class="n">num_of_cycles_control_group</span> <span class="o">/</span> <span class="n">num_of_cycles</span>
+
+        <span class="n">cycle_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cycles_saved</span><span class="p">)</span>
+        <span class="n">percent_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">percentage_save</span><span class="p">)</span>
+
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cycle_results</span><span class="p">)</span>
+    <span class="n">percent_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">percent_results</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mean</span><span class="p">,</span> <span class="n">percent_mean</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">test_all_heuristics</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">30</span><span class="p">])</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Yuval keren, Aviran Sapir.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

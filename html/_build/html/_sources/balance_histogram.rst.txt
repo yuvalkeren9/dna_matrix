@@ -1,0 +1,7 @@
+balance\_histogram module
+=========================
+
+.. automodule:: balance_histogram
+   :members:
+   :show-inheritance:
+   :undoc-members:

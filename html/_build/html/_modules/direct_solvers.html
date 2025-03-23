@@ -1,0 +1,220 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>direct_solvers &mdash; DNA Strands in Matrix Final Project 1.00 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=da1d7f10"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            DNA Strands in Matrix Final Project
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">project_files</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DNA Strands in Matrix Final Project</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">direct_solvers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for direct_solvers</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Solve the problem!</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<div class="viewcode-block" id="bfs_shortest_distance">
+<a class="viewcode-back" href="../direct_solvers.html#direct_solvers.bfs_shortest_distance">[docs]</a>
+<span class="k">def</span> <span class="nf">bfs_shortest_distance</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform BFS shortest distance between start and target.</span>
+
+<span class="sd">    :param graph: The graph to traverse.</span>
+<span class="sd">    :param start: The starting vertice to traverse from.</span>
+<span class="sd">    :param target: The target vertice to calculate distance to.</span>
+
+<span class="sd">    :return: The distance between the start and target vertices.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">start</span><span class="p">])</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="p">{</span><span class="n">start</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>  <span class="c1"># Distance from start to each node</span>
+
+    <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>  <span class="c1"># Stop early if we reach the target</span>
+            <span class="k">return</span> <span class="n">distances</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="k">if</span> <span class="n">neighbor</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">distances</span><span class="p">:</span>  <span class="c1"># If not visited</span>
+                <span class="n">distances</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">=</span> <span class="n">distances</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">neighbor</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># Return -1 if the target is unreachable</span></div>
+
+
+
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+
+<div class="viewcode-block" id="create_graph_from_strands">
+<a class="viewcode-back" href="../direct_solvers.html#direct_solvers.create_graph_from_strands">[docs]</a>
+<span class="k">def</span> <span class="nf">create_graph_from_strands</span><span class="p">(</span><span class="n">dna_list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform BFS shortest distance between start and target.</span>
+
+<span class="sd">    :param dna_list: The list of DNA strings.</span>
+<span class="sd">    :return: A graph describing all the possible states in the system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">dna_list</span>
+
+    <span class="kn">from</span> <span class="nn">main</span> <span class="kn">import</span> <span class="n">get_next_base</span><span class="p">,</span> <span class="n">DNA_BASES</span>
+
+    <span class="c1"># create vertices</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">len_of_strands</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dna_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">num_of_strands</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dna_list</span><span class="p">)</span>
+    <span class="c1"># tuples = list(product(range(len_of_strands), repeat=len_of_strands))</span>
+    <span class="c1"># tuples_as_lists = [list(tup) for tup in tuples]  # Convert tuples to list</span>
+    <span class="c1"># tuples2 = list(product(tuples, DNA_BASES))</span>
+    <span class="c1"># tuples_as_lists2 = [list(tup) for tup in tuples2]  # Convert tuples to list</span>
+
+    <span class="n">my_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">tup</span><span class="p">)</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">len_of_strands</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">repeat</span><span class="o">=</span><span class="n">num_of_strands</span><span class="p">)]</span>
+    <span class="n">vertices_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">tup</span><span class="p">)</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">my_list</span><span class="p">,</span> <span class="n">DNA_BASES</span><span class="p">)]</span>
+
+    <span class="c1">#add edges</span>
+    <span class="k">for</span> <span class="n">vertice</span> <span class="ow">in</span> <span class="n">vertices_list</span><span class="p">:</span>
+
+        <span class="n">vertice_as_tuple</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">inner_list</span><span class="p">)</span> <span class="k">for</span> <span class="n">inner_list</span> <span class="ow">in</span> <span class="n">vertice</span><span class="p">)</span>
+        <span class="n">graph</span><span class="p">[</span><span class="n">vertice_as_tuple</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># print(vertice)</span>
+        <span class="n">list_of_possible_edges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">vertice_state</span> <span class="o">=</span> <span class="n">vertice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">vertice_base</span> <span class="o">=</span> <span class="n">vertice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_of_strands</span><span class="p">):</span>
+            <span class="n">curr_strand</span> <span class="o">=</span> <span class="n">dna_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">curr_strand_next_base_index</span> <span class="o">=</span> <span class="n">vertice_state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">curr_strand_next_base_index</span> <span class="o">&gt;=</span> <span class="n">len_of_strands</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">curr_strand_next_base</span> <span class="o">=</span> <span class="n">curr_strand</span><span class="p">[</span><span class="n">curr_strand_next_base_index</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">curr_strand_next_base</span> <span class="o">==</span> <span class="n">vertice_base</span><span class="p">:</span>
+                <span class="c1"># Add edge</span>
+                <span class="c1"># Update the index</span>
+                <span class="n">vertice_to_connect_to_state</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">vertice_state</span><span class="p">)</span>
+                <span class="n">vertice_to_connect_to_state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertice_to_connect_to_state</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="c1"># Update the base</span>
+                <span class="n">vertice_to_connect_to_base</span> <span class="o">=</span> <span class="n">get_next_base</span><span class="p">(</span><span class="n">vertice_base</span><span class="p">)</span>
+
+                <span class="n">vertice_to_connect_to</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertice_to_connect_to_state</span><span class="p">,</span> <span class="n">vertice_to_connect_to_base</span><span class="p">]</span>
+                <span class="n">vertice_to_connect_to_as_tupple</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">inner_list</span><span class="p">)</span> <span class="k">for</span> <span class="n">inner_list</span> <span class="ow">in</span> <span class="n">vertice_to_connect_to</span><span class="p">)</span>
+                <span class="n">graph</span><span class="p">[</span><span class="n">vertice_as_tuple</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vertice_to_connect_to_as_tupple</span><span class="p">)</span>
+
+        <span class="c1"># Add an edge that does not move up in state, only to next base</span>
+        <span class="n">vertice_to_connect_to_same_state</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">vertice_state</span><span class="p">)</span>
+        <span class="n">vertice_to_connect_to_same</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertice_to_connect_to_same_state</span><span class="p">,</span> <span class="n">get_next_base</span><span class="p">(</span><span class="n">vertice_base</span><span class="p">)]</span>
+        <span class="n">vertice_to_connect_to_same_state_as_tupple</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">inner_list</span><span class="p">)</span> <span class="k">for</span> <span class="n">inner_list</span> <span class="ow">in</span> <span class="n">vertice_to_connect_to_same</span><span class="p">)</span>
+        <span class="n">graph</span><span class="p">[</span><span class="n">vertice_as_tuple</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vertice_to_connect_to_same_state_as_tupple</span><span class="p">)</span>
+
+    <span class="c1"># for key, value in graph.items():</span>
+    <span class="c1">#     print(f&quot;{key}: {value}&quot;)</span>
+
+    <span class="k">return</span> <span class="n">graph</span></div>
+
+
+<div class="viewcode-block" id="get_optimal_row_solution">
+<a class="viewcode-back" href="../direct_solvers.html#direct_solvers.get_optimal_row_solution">[docs]</a>
+<span class="k">def</span> <span class="nf">get_optimal_row_solution</span><span class="p">(</span><span class="n">dna_list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find the minimum number of cycles required to synthesize a row of DNA strands.</span>
+
+<span class="sd">    :param dna_list: The list of DNA strings.</span>
+<span class="sd">    :return: The minimum number of cycles.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">dna_list</span>
+    <span class="kn">from</span> <span class="nn">main</span> <span class="kn">import</span> <span class="n">DNA_BASES</span>
+
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">create_graph_from_strands</span><span class="p">(</span><span class="n">dna_list</span><span class="p">)</span>
+    <span class="n">starting_tupple</span> <span class="o">=</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">dna_list</span><span class="p">)),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">DNA_BASES</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">dna_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">dna_list</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">bfs_shortest_distance</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span><span class="n">starting_tupple</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Yuval keren, Aviran Sapir.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

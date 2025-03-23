@@ -1,0 +1,184 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>graphs module &mdash; DNA Strands in Matrix Final Project 1.00 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=da1d7f10"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="lookahead module" href="lookahead.html" />
+    <link rel="prev" title="direct_solvers module" href="direct_solvers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            DNA Strands in Matrix Final Project
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">project_files</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="balance_histogram.html">balance_histogram module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="direct_solvers.html">direct_solvers module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">graphs module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#graphs.calc_exp_num_of_overhead_cycles"><code class="docutils literal notranslate"><span class="pre">calc_exp_num_of_overhead_cycles()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#graphs.calc_perc_with_resp_to_bases_num"><code class="docutils literal notranslate"><span class="pre">calc_perc_with_resp_to_bases_num()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#graphs.plot_graph"><code class="docutils literal notranslate"><span class="pre">plot_graph()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#graphs.plot_simple_graph"><code class="docutils literal notranslate"><span class="pre">plot_simple_graph()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lookahead.html">lookahead module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DNA Strands in Matrix Final Project</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">project_files</a></li>
+      <li class="breadcrumb-item active">graphs module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/graphs.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-graphs">
+<span id="graphs-module"></span><h1>graphs module<a class="headerlink" href="#module-graphs" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="graphs.calc_exp_num_of_overhead_cycles">
+<span class="sig-prename descclassname"><span class="pre">graphs.</span></span><span class="sig-name descname"><span class="pre">calc_exp_num_of_overhead_cycles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphs.html#calc_exp_num_of_overhead_cycles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphs.calc_exp_num_of_overhead_cycles" title="Link to this definition"></a></dt>
+<dd><p>Calculate the expected number of overhead cycles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – The number of strands.</p></li>
+<li><p><strong>n</strong> – The length of a DNA strand.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="graphs.calc_perc_with_resp_to_bases_num">
+<span class="sig-prename descclassname"><span class="pre">graphs.</span></span><span class="sig-name descname"><span class="pre">calc_perc_with_resp_to_bases_num</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphs.html#calc_perc_with_resp_to_bases_num"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphs.calc_perc_with_resp_to_bases_num" title="Link to this definition"></a></dt>
+<dd><p>Calculate the percentage of overhead cycles with respect to the number of bases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – The number of strands.</p></li>
+<li><p><strong>n</strong> – The length of a DNA strand.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="graphs.plot_graph">
+<span class="sig-prename descclassname"><span class="pre">graphs.</span></span><span class="sig-name descname"><span class="pre">plot_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func_to_use</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_of_strands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dna_strand_len</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphs.html#plot_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphs.plot_graph" title="Link to this definition"></a></dt>
+<dd><p>Plot a graph with a given function and its parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func_to_use</strong> – The function to apply.</p></li>
+<li><p><strong>num_of_strands</strong> – The number of strands.</p></li>
+<li><p><strong>dna_strand_len</strong> – The length of a DNA strand.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="graphs.plot_simple_graph">
+<span class="sig-prename descclassname"><span class="pre">graphs.</span></span><span class="sig-name descname"><span class="pre">plot_simple_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphs.html#plot_simple_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphs.plot_simple_graph" title="Link to this definition"></a></dt>
+<dd><p>Plot a graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_values</strong> – The x values.</p></li>
+<li><p><strong>y_values</strong> – The y values.</p></li>
+<li><p><strong>x_label</strong> – The x label.</p></li>
+<li><p><strong>y_label</strong> – The y label.</p></li>
+<li><p><strong>title</strong> – The title to use for the graph.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="direct_solvers.html" class="btn btn-neutral float-left" title="direct_solvers module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="lookahead.html" class="btn btn-neutral float-right" title="lookahead module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Yuval keren, Aviran Sapir.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+direct\_solvers module
+======================
+
+.. automodule:: direct_solvers
+   :members:
+   :show-inheritance:
+   :undoc-members:

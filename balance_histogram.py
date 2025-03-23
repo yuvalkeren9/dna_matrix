@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 
 # Ensure these are correctly exported in main.py
 from main import create_random_strand, DNA_BASES
-from main import consume_logic_lookahead_one_v1, consume_logic_lookahead_one_v2
-from main import consume_logic_lookahead_one_v3, consume_logic_lookahead_one_v4, consume_logic_random
+from lookahead import consume_logic_lookahead_one_v1, consume_logic_lookahead_one_v2
+from lookahead import consume_logic_lookahead_one_v3, consume_logic_lookahead_one_v4, consume_logic_random
 from main import consume_with_logic
 
 

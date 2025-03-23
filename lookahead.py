@@ -1,7 +1,5 @@
 import random
-from main import get_next_base
-from main import DNA_BASES
-from main import shift_string
+from utils import DNA_BASES, shift_string, get_next_base
 
 
 def consume_logic_random(dna_list, base):

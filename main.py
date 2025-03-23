@@ -8,9 +8,9 @@ from graphs import plot_simple_graph
 from lookahead import consume_logic_lookahead_one_v1, consume_logic_lookahead_one_v2
 from lookahead import consume_logic_lookahead_one_v3, consume_logic_lookahead_one_v4
 from lookahead import consume_logic_random
+from utils import DNA_BASES, get_next_base
 
 # Globals:
-DNA_BASES = 'ACGT'
 DEBUG = False
 
 # Functions to set up experiments
@@ -74,40 +74,6 @@ def consume_with_logic(dna_list, base, func):
     consume_base(selected_index, dna_list)
 
     return
-
-
-# Functions for DNA arithmetics
-
-def get_next_base(current_base):
-    """
-    Remove a base from a dna strand, dna_list[index]
-
-    :param current_base: The current base.
-    :return: The next machine base, based on DNA_BASES.
-    """
-    index = DNA_BASES.find(current_base)
-
-    if index == -1:
-        raise ValueError(f"Base '{current_base}' is not a valid DNA base.")
-
-    # Return the next base in the string, wrapping around cyclically
-    next_index = (index + 1) % len(DNA_BASES)
-    return DNA_BASES[next_index]
-
-
-def shift_string(s, char):
-    """
-    Shift a string to start with the char given. Used in lookahead for efficiency.
-    :param s: The string to shift
-    :param char: The char that will be the start of the string
-    :return: The shifted string.
-    """
-    index = s.find(char)
-
-    if index == -1:
-        raise ValueError(f"Character '{char}' not found in string.")
-
-    return s[index:] + s[:index]  # Rotate the string
 
 
 def synthesize(dna_list, func, should_visualize = False):

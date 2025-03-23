@@ -2,26 +2,16 @@
 
 # Imports
 import random
-import sys
 import copy
 import numpy as np
-from direct_solvers import get_optimal_row_solution
 from graphs import plot_simple_graph
+from lookahead import consume_logic_lookahead_one_v1, consume_logic_lookahead_one_v2
+from lookahead import consume_logic_lookahead_one_v3, consume_logic_lookahead_one_v4
+from lookahead import consume_logic_random
 
 # Globals:
 DNA_BASES = 'ACGT'
 DEBUG = False
-
-#trying sphnix
-def my_function(param1, param2):
-    """
-    This is an example function.
-
-    :param param1: The first parameter.
-    :param param2: The second parameter.
-    :return: A string describing the operation.
-    """
-    return f"Result of {param1} and {param2}"
 
 # Functions to set up experiments
 def create_random_strand(length):
@@ -62,166 +52,14 @@ def consume_base(index, dna_list):
         print("index is out of range!")
 
 
-def consume_logic_random(dna_list, base):
-    """
-    A consume logic function, which picks a strand at random to consume a base from.
-
-    :param dna_list: A list of dna strands.
-    :param base: The base to consume.
-    :return: The strand to consume
-    """
-    assert dna_list
-
-    # Filter the strands that begin with the given base
-    filtered_strands = [temp_strand for temp_strand in dna_list if temp_strand.startswith(base)]
-
-    if len(filtered_strands) == 0:
-        #        print("Debug. No base available!") TODO: remove
-        return None
-
-    return random.choice(filtered_strands)
-
-
-# This version just looks if a selected strand has the next base in its lookahead
-def consume_logic_lookahead_one_v1(dna_list, base):
-    assert dna_list
-
-    # Filter the strands that begin with the given base
-    filtered_strands = [temp_strand for temp_strand in dna_list if temp_strand.startswith(base)]
-
-    if len(filtered_strands) == 0:
-        #        print("Debug. No base available!") TODO: remove
-        return None
-
-    next_base = get_next_base(base)
-
-    # Look for a strand with the next base as a second character
-    for strand in filtered_strands:
-        if len(strand) > 1 and strand[1] == next_base:
-            return strand
-
-    # Did not find any strand with the next base as the next character, returning a random strand
-    return random.choice(filtered_strands)
-
-
-# Can be written with better complexity
-def consume_logic_lookahead_one_v2(dna_list, base):
-    assert dna_list
-
-    # Filter the strands that begin with the given base
-    filtered_strands = [temp_strand for temp_strand in dna_list if temp_strand.startswith(base)]
-
-    if len(filtered_strands) == 0:
-        #        print("Debug. No base available!") TODO: remove
-        return None
-
-    next_base = get_next_base(base)
-    shifted_dna_bases = shift_string(DNA_BASES, next_base)
-
-    is_base_needed = []
-    for curr_base in shifted_dna_bases[:-1]: # Last char will have special treatment
-        is_base_needed.append(not any(s[0] == curr_base for s in dna_list))
-    temp_counter = 0
-    for strand in dna_list:
-        if strand[0] == shifted_dna_bases[-1]:
-            temp_counter += 1
-            if temp_counter == 2:
-                break
-    is_base_needed.append(temp_counter > 1)
-
-    for i, curr_base in enumerate(shifted_dna_bases):
-        for strand in filtered_strands:
-            if len(strand) > 1 and strand[1] == curr_base and (is_base_needed[i] is True):
-                return strand
-
-    # Did not find any strand with the next base as the next character, returning a random strand
-    return random.choice(filtered_strands)
-
-def consume_logic_lookahead_one_v3(dna_list, base):
-    assert dna_list
-
-    # Filter the strands that begin with the given base
-    filtered_strands = [temp_strand for temp_strand in dna_list if temp_strand.startswith(base)]
-
-    if len(filtered_strands) == 0:
-        #        print("Debug. No base available!") TODO: remove
-        return None
-
-    bases_counter_d = {}
-    for curr_base in DNA_BASES:
-        bases_counter_d[curr_base] = 0
-
-    for strand in dna_list:
-        bases_counter_d[strand[0]] += 1
-
-    # Removing 1 from current base, since it will be deleted by one anyway
-    bases_counter_d[base] -= 1
-
-    # Edge case: last base in last strand
-    max_key = max(bases_counter_d, key=bases_counter_d.get)
-    if max_key == 0:
-        print("edge case!")
-        return random.choice(filtered_strands)
-
-    # Define a custom order
-    custom_order = shift_string(DNA_BASES, get_next_base(base))
-    # Create a mapping from base to its priority in custom_order
-    order_rank = {base: rank for rank, base in enumerate(custom_order)}
-
-    # Pick a strand that will unlock a base that is least common in current synthesizeable (funny word) indices
-    sorted_by_value = sorted(bases_counter_d.items(), key=lambda x: (x[1], order_rank[x[0]]))
-    for curr_base, _ in sorted_by_value:
-        for strand in filtered_strands:
-            if len(strand) > 1 and strand[1] == curr_base:
-                return strand
-
-    # Did not find any strand with the next base as the next character, returning a random strand
-    return random.choice(filtered_strands)
-
-
-# Can be written with better complexity
-# Same as V2, but instead of picking randomly the next base, pick the longest strand (with the base)
-def consume_logic_lookahead_one_v4(dna_list, base):
-    assert dna_list
-
-    # Filter the strands that begin with the given base
-    filtered_strands = [temp_strand for temp_strand in dna_list if temp_strand.startswith(base)]
-
-    if len(filtered_strands) == 0:
-        #        print("Debug. No base available!") TODO: remove
-        return None
-
-    next_base = get_next_base(base)
-    shifted_dna_bases = shift_string(DNA_BASES, next_base)
-
-    is_base_needed = []
-    for curr_base in shifted_dna_bases[:-1]: # Last char will have special treatment
-        is_base_needed.append(not any(s[0] == curr_base for s in dna_list))
-    temp_counter = 0
-    for strand in dna_list:
-        if strand[0] == shifted_dna_bases[-1]:
-            temp_counter += 1
-            if temp_counter == 2:
-                break
-    is_base_needed.append(temp_counter > 1)
-
-    curr_longest_strand = ""
-    curr_max_len = 0
-    for i, curr_base in enumerate(shifted_dna_bases):
-        for strand in filtered_strands:
-            if len(strand) > 1 and strand[1] == curr_base and (is_base_needed[i] is True):
-                if len(strand) > curr_max_len:
-                    curr_longest_strand = strand
-                    curr_max_len = len(strand)
-
-    if curr_longest_strand != "":
-        return curr_longest_strand
-
-    # Did not find any strand with the next base as the next character, returning a random strand
-    return random.choice(filtered_strands)
-
-
 def consume_with_logic(dna_list, base, func):
+    """
+    Use a consume function to decide which base to remove
+
+    :param dna_list: The list of the dna strands.
+    :param base: The base to consume
+    :param func: The logic function to consume with.
+    """
 
     assert dna_list
 
@@ -241,6 +79,12 @@ def consume_with_logic(dna_list, base, func):
 # Functions for DNA arithmetics
 
 def get_next_base(current_base):
+    """
+    Remove a base from a dna strand, dna_list[index]
+
+    :param current_base: The current base.
+    :return: The next machine base, based on DNA_BASES.
+    """
     index = DNA_BASES.find(current_base)
 
     if index == -1:
@@ -252,7 +96,12 @@ def get_next_base(current_base):
 
 
 def shift_string(s, char):
-    """Shifts string `s` to begin with the first occurrence of `char`."""
+    """
+    Shift a string to start with the char given. Used in lookahead for efficiency.
+    :param s: The string to shift
+    :param char: The char that will be the start of the string
+    :return: The shifted string.
+    """
     index = s.find(char)
 
     if index == -1:
@@ -261,8 +110,15 @@ def shift_string(s, char):
     return s[index:] + s[:index]  # Rotate the string
 
 
-# DNA synthesiser machine TODO: currently only a single row is supported
-def synthezise(dna_list, func, should_visualize = False):
+def synthesize(dna_list, func, should_visualize = False):
+    """
+    Given a dna_list that represents a row, synthesize the strands
+    :param dna_list: The dna strands in a row
+    :param func: The logic func that will decide at each step which strand to pick
+    :param should_visualize: If true, and run through command line (and not some IDE)
+    will interactively show the process
+    :return: The amount of cycles it took to synthesize
+    """
     base = DNA_BASES[0]
     num_of_cycles = 0
     while dna_list:
@@ -280,6 +136,14 @@ def synthezise(dna_list, func, should_visualize = False):
 
 
 def run_experiment(num_of_strands, len_of_strands, logic_func):
+    """
+    Run an experiment. Will generate a list of strands given the parameters, and synthesize them.
+    One time it will synthesize with the random logic, the second time with the logic func given.
+    :param num_of_strands: The amount of strands.
+    :param len_of_strands: The len of each strand.
+    :param logic_func: The logic function to test against the random picking algorithm.
+    :return: The mean and percent of cycles saved (since this is repeated 300 times, we return a mean)
+    """
     cycle_results = []
     percent_results = []
     for _ in range(300):
@@ -296,6 +160,14 @@ def run_experiment(num_of_strands, len_of_strands, logic_func):
 
 
 def run_single_experiment(num_of_strands, len_of_strands, logic_func, own_list=None):
+    """
+    An auxiliary function of run_experiment. Runs a single experiment.
+    :param num_of_strands: How many strands in the row.
+    :param len_of_strands: The len of each strand.
+    :param logic_func: The function to use to consume.
+    :param own_list: A list of DNA strands. If given, the first two parameters are ignored, and the list will be used.
+    :return: The difference in cycles between random and logic_func (also return the percent change).
+    """
     if own_list is None:
         dna_list = create_dna_list(num_of_strands, len_of_strands)
     else:
@@ -303,10 +175,10 @@ def run_single_experiment(num_of_strands, len_of_strands, logic_func, own_list=N
 
     dna_list_copy = copy.deepcopy(dna_list)
 
-    num_of_cycles = synthezise(dna_list, logic_func, should_visualize=False)
+    num_of_cycles = synthesize(dna_list, logic_func, should_visualize=False)
     # print(f"The num of cycles for selected logic: {num_of_cycles}")
 
-    num_of_cycles_control_group = synthezise(dna_list_copy, consume_logic_random, should_visualize=False)
+    num_of_cycles_control_group = synthesize(dna_list_copy, consume_logic_random, should_visualize=False)
     # print(f"The num of cycles for random logic: {num_of_cycles_control_group}")
 
     cycles_saved = num_of_cycles_control_group - num_of_cycles
@@ -324,7 +196,12 @@ logic_functions = [
 # Get function names as strings
 logic_function_names = [func.__name__ for func in logic_functions]
 
+
 def test_all_heuristics(num_of_strands_list):
+    """
+    Tests all of our heuristics at the same time.
+    :param num_of_strands_list: Each cell in the list will run an experiment with the cell's number of strands.
+    """
     import matplotlib.pyplot as plt
 
     num_of_logic_funcs = len(logic_functions)
@@ -511,17 +388,25 @@ def process_dna_pairs(dna_list: list) -> list:
 
     return processed_strands
 
+
 def run_experiment_change_dna_strands(num_of_strands, len_of_strands, logic_func):
+    """
+    Runs a single experiment of that involves changing DNA strands.
+    :param num_of_strands: The number of strands to use.
+    :param len_of_strands: The length of each strand
+    :param logic_func: Which logic func to use to consume
+    :return: The mean and percent of change with respect to random.
+    """
     cycle_results = []
     percent_results = []
     for _ in range(300):
         dna_list = create_dna_list(num_of_strands, len_of_strands)
         shifted_list = process_dna_pairs(dna_list)
 
-        num_of_cycles = synthezise(shifted_list, logic_func, should_visualize=False)
+        num_of_cycles = synthesize(shifted_list, logic_func, should_visualize=False)
         # print(f"The num of cycles for selected logic: {num_of_cycles}")
 
-        num_of_cycles_control_group = synthezise(dna_list, logic_func, should_visualize=False)
+        num_of_cycles_control_group = synthesize(dna_list, logic_func, should_visualize=False)
         # print(f"The num of cycles for random logic: {num_of_cycles_control_group}")
 
         cycles_saved = num_of_cycles_control_group - num_of_cycles
@@ -532,27 +417,8 @@ def run_experiment_change_dna_strands(num_of_strands, len_of_strands, logic_func
 
     mean = np.mean(cycle_results)
     percent_mean = np.mean(percent_results)
-    # print(f"The mean is: {mean}")
-    # print(f"The percent is is: {percent_mean}")
 
     return mean, percent_mean
 
 if __name__ == '__main__':
-    num_of_strands_list = [2,4, 6,8, 10,12,14,16,18,20]
-    mean_list = []
-    perc_list = []
-    for i in num_of_strands_list:
-        mean1, perc1 = run_experiment_change_dna_strands(i, 100, consume_logic_random)
-        mean_list.append(mean1)
-        perc_list.append(perc1)
-
-    plot_simple_graph(num_of_strands_list, perc_list, "Number of Strands", "Mean Overhead Cycles (%)", "Mean of Overhead Cycles Using Random Selection (%)")
-    # run_experiment(3, 100, consume_logic_lookahead_one_v1)
-
-    # # run_single_experiment(5, 20, consume_logic_lookahead_one_v1)
-    # # test_all_heuristics([2,3,4,5,6,7,8,10,12,15,20,25,30])
-    # print(process_dna_pairs(["ACG", "ACG", "ACG", "ACG"]))
-    # run_experiment_change_dna_strands(4,200,consume_logic_random)
-    # print(balance_dna_strands2("AC","AC","AC","AC"))
-
-
+    test_all_heuristics([2,3,4,5,6,7,8,10,12,15,20,25,30])
